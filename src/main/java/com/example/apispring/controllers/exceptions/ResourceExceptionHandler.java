@@ -1,5 +1,6 @@
 package com.example.apispring.controllers.exceptions;
 
+import com.example.apispring.services.exceptions.DataIntegratyViolationException;
 import com.example.apispring.services.exceptions.ObjectNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
@@ -16,5 +17,11 @@ public class ResourceExceptionHandler {
     public ResponseEntity<StandardError>objectNotFound(ObjectNotFoundException exception, HttpServletRequest request){
         StandardError error = new StandardError(LocalDateTime.now(), HttpStatus.NOT_FOUND.value(), exception.getMessage(), request.getRequestURI());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+    }
+
+    @ExceptionHandler(DataIntegratyViolationException.class)
+    public ResponseEntity<StandardError>dataIntegratyViolationException(DataIntegratyViolationException exception, HttpServletRequest request){
+        StandardError error = new StandardError(LocalDateTime.now(), HttpStatus.BAD_REQUEST.value(), exception.getMessage(), request.getRequestURI());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
 }
