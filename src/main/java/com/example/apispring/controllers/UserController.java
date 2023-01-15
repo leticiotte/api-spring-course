@@ -47,4 +47,10 @@ public class UserController {
         User updatedUser = this.service.update(userDTO);
         return ResponseEntity.ok().body(this.mapper.map(updatedUser, UserDTO.class));
     }
+
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<UserDTO> update(@PathVariable Integer id){
+        this.service.delete(id);
+        return ResponseEntity.noContent().build();
+    }
 }
