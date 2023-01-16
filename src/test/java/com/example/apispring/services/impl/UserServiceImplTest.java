@@ -3,6 +3,7 @@ package com.example.apispring.services.impl;
 import com.example.apispring.domain.User;
 import com.example.apispring.domain.dto.UserDTO;
 import com.example.apispring.repositories.UserRepository;
+import com.example.apispring.services.exceptions.DataIntegratyViolationException;
 import com.example.apispring.services.exceptions.ObjectNotFoundException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -95,6 +96,19 @@ class UserServiceImplTest {
         Assertions.assertEquals(NAME, response.getName());
         Assertions.assertEquals(EMAIL, response.getEmail());
         Assertions.assertEquals(PASSWORD, response.getPassword());
+    }
+
+    @Test
+    void whenCreateThenReturnsADataIntegrityViolationException() {
+        Mockito.when(this.repository.findByEmail(Mockito.anyString())).thenReturn(optionalUser);
+
+        try{
+            optionalUser.get().setId(2);
+            this.service.create(userDTO);
+        }catch (Exception exception){
+            Assertions.assertEquals(DataIntegratyViolationException.class, exception.getClass());
+            Assertions.assertEquals("E-mail já cadastrado no sistema!", exception.getMessage());
+        }
     }
 
     @Test
