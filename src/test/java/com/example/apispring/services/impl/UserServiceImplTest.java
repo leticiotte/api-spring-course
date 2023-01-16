@@ -14,6 +14,7 @@ import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.List;
 import java.util.Optional;
 
 @SpringBootTest
@@ -64,7 +65,18 @@ class UserServiceImplTest {
     }
 
     @Test
-    void findAll() {
+    void whenFindAllThenReturnsAListOfUsers() {
+        int index = 0;
+        Mockito.when(this.repository.findAll()).thenReturn(List.of(user));
+
+        List<User> response = this.service.findAll();
+
+        Assertions.assertNotNull(response);
+        Assertions.assertEquals(1, response.size());
+        Assertions.assertEquals(User.class, response.get(index).getClass());
+        Assertions.assertEquals(ID, response.get(index).getId());
+        Assertions.assertEquals(NAME, response.get(index).getName());
+        Assertions.assertEquals(EMAIL, response.get(index).getEmail());
     }
 
     @Test
