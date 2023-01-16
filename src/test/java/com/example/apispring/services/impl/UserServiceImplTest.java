@@ -50,6 +50,9 @@ class UserServiceImplTest {
         Assertions.assertNotNull(response);
         Assertions.assertEquals(User.class, response.getClass());
         Assertions.assertEquals(ID, response.getId());
+        Assertions.assertEquals(NAME, response.getName());
+        Assertions.assertEquals(EMAIL, response.getEmail());
+        Assertions.assertEquals(PASSWORD, response.getPassword());
     }
 
     @Test
@@ -77,10 +80,21 @@ class UserServiceImplTest {
         Assertions.assertEquals(ID, response.get(index).getId());
         Assertions.assertEquals(NAME, response.get(index).getName());
         Assertions.assertEquals(EMAIL, response.get(index).getEmail());
+        Assertions.assertEquals(PASSWORD, response.get(index).getPassword());
     }
 
     @Test
-    void create() {
+    void whenCreateThenReturnsSuccess() {
+        Mockito.when(this.repository.save(Mockito.any())).thenReturn(user);
+
+        User response = this.service.create(userDTO);
+
+        Assertions.assertNotNull(response);
+        Assertions.assertEquals(User.class, response.getClass());
+        Assertions.assertEquals(ID, response.getId());
+        Assertions.assertEquals(NAME, response.getName());
+        Assertions.assertEquals(EMAIL, response.getEmail());
+        Assertions.assertEquals(PASSWORD, response.getPassword());
     }
 
     @Test
