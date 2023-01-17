@@ -12,6 +12,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.modelmapper.ModelMapper;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
@@ -28,10 +29,13 @@ class UserServiceImplTest {
     private UserServiceImpl service;
     @Mock
     private UserRepository repository;
+    @Mock
+    private ModelMapper mapper;
 
     private User user;
     private UserDTO userDTO;
     private Optional<User> optionalUser;
+
 
     @BeforeEach
     void setUp() {
