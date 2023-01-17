@@ -12,7 +12,11 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @SpringBootTest
 class UserControllerTest {
@@ -46,7 +50,7 @@ class UserControllerTest {
 
         Assertions.assertNotNull(response);
         Assertions.assertNotNull(response.getBody());
-        Assertions.assertEquals(200, response.getStatusCode().value());
+        Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
         Assertions.assertEquals(ResponseEntity.class, response.getClass());
         Assertions.assertEquals(UserDTO.class, response.getBody().getClass());
 
@@ -57,7 +61,25 @@ class UserControllerTest {
     }
 
     @Test
-    void findAll() {
+    void whenFindAllThenReturnSuccess() {
+        int index = 0;
+
+        Mockito.when(this.service.findAll()).thenReturn(List.of(user));
+        Mockito.when(this.mapper.map(Mockito.any(), Mockito.any())).thenReturn(userDTO);
+
+        ResponseEntity<List<UserDTO>> response = this.controller.findAll();
+
+        Assertions.assertNotNull(response);
+        Assertions.assertNotNull(response.getBody());
+        Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
+        Assertions.assertEquals(ResponseEntity.class, response.getClass());
+        Assertions.assertEquals(ArrayList.class, response.getBody().getClass());
+        Assertions.assertEquals(UserDTO.class, response.getBody().get(index).getClass());
+
+        Assertions.assertEquals(ID, response.getBody().get(index).getId());
+        Assertions.assertEquals(NAME, response.getBody().get(index).getName());
+        Assertions.assertEquals(EMAIL, response.getBody().get(index).getEmail());
+        Assertions.assertEquals(PASSWORD, response.getBody().get(index).getPassword());
     }
 
     @Test
