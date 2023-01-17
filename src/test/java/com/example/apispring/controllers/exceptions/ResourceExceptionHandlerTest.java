@@ -1,5 +1,6 @@
 package com.example.apispring.controllers.exceptions;
 
+import com.example.apispring.services.exceptions.DataIntegratyViolationException;
 import com.example.apispring.services.exceptions.ObjectNotFoundException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -37,6 +38,16 @@ class ResourceExceptionHandlerTest {
     }
 
     @Test
-    void dataIntegratyViolationException() {
+    void whenDataIntegrityViolationExceptionThenReturnAResponseEntity() {
+        ResponseEntity<StandardError> response = this.resourceExceptionHandler
+                .dataIntegrityViolationException(new DataIntegratyViolationException("E-mail já cadastrado no sistema!"), new MockHttpServletRequest());
+
+        Assertions.assertNotNull(response);
+        Assertions.assertNotNull(response.getBody());
+        Assertions.assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        Assertions.assertEquals(ResponseEntity.class, response.getClass());
+        Assertions.assertEquals(StandardError.class, response.getBody().getClass());
+        Assertions.assertEquals("E-mail já cadastrado no sistema!", response.getBody().getError());
+
     }
 }
